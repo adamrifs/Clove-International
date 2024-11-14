@@ -1,5 +1,5 @@
 const users = require('../Models/userSchema')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 dotenv.config()
