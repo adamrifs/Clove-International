@@ -84,6 +84,16 @@ const edituser = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+const adduserkyc = async (req,res)=>{
+    try{
+        const {id} = req.params 
+        const {kyc} = req.body
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).send('error occured')
+    }
+}
 const getuserwithinvestment = async (req, res) => {
     try {
         const { id } = req.params

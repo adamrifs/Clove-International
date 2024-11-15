@@ -18,5 +18,7 @@ router.post(
     kycController.registerkyc
 );
 
+router.get('/getkyc', kycController.getkyc)
+
 
 module.exports = router

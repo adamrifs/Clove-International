@@ -3,39 +3,6 @@ const upload = require('../Middleware/multer')
 const { compressImage } = require('../Middleware/multer')
 
 
-// const registerkyc = async (req, res) => {
-//     try {
-//         console.log('Request Body:', req.body);
-//         console.log('Files:', req.files);
-
-
-//         const kycData = new kyc({
-//             name: req.body.name,
-//             email: req.body.email,
-//             phone: req.body.phone,
-//             age: req.body.age,
-//             address: req.body.address,
-//             city: req.body.city,
-//             pincode: req.body.pincode,
-//             state: req.body.state,
-//             bankaccountnumber: req.body.bankaccountnumber,
-//             bankifsc: req.body.bankifsc,
-//             bankbranch: req.body.bankbranch,
-//             photo: req.files && req.files.photo ? req.files.photo[0].path : null,
-//             govidcard: req.files && req.files.govidcard ? req.files.govidcard[0].path : null,
-//             data: Date.now()
-//         });
-
-//         await kycData.save();
-//         res.status(200).json({ message: 'KYC data updated successfully', data: kycData });
-//     }
-//     catch (error) {
-//         console.log(error);
-//         res.status(500).send('Internal error occurred');
-//     }
-// };
-
-
 const registerkyc = async (req, res) => {
     try {
         console.log('Request Body:', req.body);
@@ -79,4 +46,15 @@ const registerkyc = async (req, res) => {
     }
 };
 
-module.exports = { registerkyc }
+const getkyc = async (req, res) => {
+    try {
+        const kycdata = await kyc.find()
+        res.status(200).send(kycdata)
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal error occurred');
+    }
+}
+
+module.exports = { registerkyc , getkyc}
