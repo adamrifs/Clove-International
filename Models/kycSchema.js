@@ -10,7 +10,7 @@ const kycSchema = new mongoose.Schema({
     pincode: { type: Number },
     state: { type: String },
     bankaccountnumber: { type: Number },
-    bankifsc: { type: Number },
+    bankifsc: { type: String },
     bankbranch: { type: String },
     photo: { type: String },
     govidcard: { type: String },
