@@ -84,16 +84,7 @@ const edituser = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
-const adduserkyc = async (req,res)=>{
-    try{
-        const {id} = req.params 
-        const {kyc} = req.body
-    }
-    catch(error){
-        console.log(error)
-        res.status(500).send('error occured')
-    }
-}
+
 const getuserwithinvestment = async (req, res) => {
     try {
         const { id } = req.params
@@ -108,6 +99,19 @@ const getuserwithinvestment = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+const adduserkyc = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { kyc } = req.body
+        await users.findByIdAndUpdate(id, { $push: { kyc: kyc } }, { new: true })
+        res.status(200).send('kyc added succesfully')
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send('error occured')
+    }
+}
+
 const getuserkyc = async (req, res) => {
     try {
         const { id } = req.params
@@ -120,4 +124,4 @@ const getuserkyc = async (req, res) => {
     }
 }
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser ,getuserkyc}
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, getuserkyc ,adduserkyc}
