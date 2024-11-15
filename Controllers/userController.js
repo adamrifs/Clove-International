@@ -72,12 +72,12 @@ const edituser = async (req, res) => {
         const { id } = req.params
         const { investments } = req.body
         const newInvestment = {
-            investmentId :investments,
-            date : new Date()
+            investmentId: investments,
+            date: new Date()
         };
         await users.findByIdAndUpdate(id, { $push: { investments: newInvestment } }, { new: true })
         res.status(200).send('investment data saved succesfull')
-        console.log(investments,'investments details')
+        console.log(investments, 'investments details')
     }
     catch (error) {
         console.log(error)
@@ -98,5 +98,16 @@ const getuserwithinvestment = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+const getuserkyc = async (req, res) => {
+    try {
+        const { id } = req.params
+        const userkyc = await users.findById(id).populate('kyc')
+        res.status(200).send(userkyc)
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send('error occured')
+    }
+}
 
-module.exports = { register, login, edituser, getuserwithinvestment,getUser }
+module.exports = { register, login, edituser, getuserwithinvestment, getUser ,getuserkyc}

@@ -7,4 +7,5 @@ router.post('/login',userController.login)
 router.get('/getUser',userController.getUser)
 router.put('/edituser/:id',userController.edituser)
 router.get('/getuserwithinvestment/:id',userController.getuserwithinvestment)
+router.get('/getuserkyc/:id',userController.getuserkyc)
 module.exports = router
