@@ -151,8 +151,8 @@ const registerkyc = async (req, res) => {
             data: Date.now(),
         };
 
-        await kycData.save();
-        res.status(200).json({ message: 'KYC data updated successfully', data: kycData });
+        await user.save();
+        res.status(200).json({ message: 'KYC data updated successfully', user});
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal error occurred');
