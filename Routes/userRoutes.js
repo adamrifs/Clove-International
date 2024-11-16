@@ -6,7 +6,7 @@ const userMiddleware = require('../Middleware/userMiddleware')
 
 router.post('/register', userController.register)
 router.post('/login', userController.login)
-router.get('/getUser', userController.getUser)
+router.get('/getUser', userMiddleware, userController.getUser)
 router.put('/edituser/:id', userMiddleware, userController.edituser)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.get('/getuserkyc/:id', userController.getuserkyc)

@@ -58,7 +58,11 @@ const login = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await users.find()
+        const userId = req.user.id
+        const user = await users.findById(userId)
+        if (!user) {
+            res.status(400).json({ message: 'user not found' })
+        }
         res.status(200).send(user)
     }
     catch (error) {
@@ -66,6 +70,7 @@ const getUser = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+
 
 const edituser = async (req, res) => {
     try {
@@ -106,8 +111,8 @@ const adduserkyc = async (req, res) => {
     try {
         const { id } = req.params
         const { kyc } = req.body
-        console.log("kyc",req.body);
-        
+        console.log("kyc", req.body);
+
         await users.findByIdAndUpdate(id, { kyc: kyc }, { new: true })
         res.status(200).send('kyc added succesfully')
     }
