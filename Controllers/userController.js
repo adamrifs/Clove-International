@@ -1,6 +1,8 @@
 const users = require('../Models/userSchema')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const upload = require('../Middleware/multer')
+const { compressImage } = require('../Middleware/multer')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -107,31 +109,75 @@ const getuserwithinvestment = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
-const adduserkyc = async (req, res) => {
+
+const registerkyc = async (req, res) => {
     try {
-        const { id } = req.params
-        const { kyc } = req.body
-        console.log("kyc", req.body);
+        console.log('Request Body:', req.body);
+        console.log('Files:', req.files);
 
-        await users.findByIdAndUpdate(id, { kyc: kyc }, { new: true })
-        res.status(200).send('kyc added succesfully')
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send('error occured')
-    }
-}
+        // Define file paths for compressed images
+        const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
+        const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
 
-const getuserkyc = async (req, res) => {
-    try {
-        const { id } = req.params
-        const userkyc = await users.findById(id).populate('kyc')
-        res.status(200).send(userkyc)
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send('error occured')
-    }
-}
+        // Compress images using Sharp
+        if (req.files.photo) {
+            await compressImage(req.files.photo[0].buffer, photoPath);
+        }
+        if (req.files.govidcard) {
+            await compressImage(req.files.govidcard[0].buffer, govidcardPath);
+        }
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, getuserkyc, adduserkyc }
+        // Save KYC data
+        const kycData = new kyc({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            age: req.body.age,
+            address: req.body.address,
+            city: req.body.city,
+            pincode: req.body.pincode,
+            state: req.body.state,
+            bankaccountnumber: req.body.bankaccountnumber,
+            bankifsc: req.body.bankifsc,
+            bankbranch: req.body.bankbranch,
+            photo: photoPath,
+            govidcard: govidcardPath,
+            data: Date.now(),
+        });
+
+        await kycData.save();
+        res.status(200).json({ message: 'KYC data updated successfully', data: kycData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal error occurred');
+    }
+};
+
+// const adduserkyc = async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const { kyc } = req.body
+//         console.log("kyc", req.body);
+
+//         await users.findByIdAndUpdate(id, { kyc: kyc }, { new: true })
+//         res.status(200).send('kyc added succesfully')
+//     }
+//     catch (error) {
+//         console.log(error)
+//         res.status(500).send('error occured')
+//     }
+// }
+
+// const getuserkyc = async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const userkyc = await users.findById(id).populate('kyc')
+//         res.status(200).send(userkyc)
+//     }
+//     catch (error) {
+//         console.log(error)
+//         res.status(500).send('error occured')
+//     }
+// }
+
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc }
