@@ -106,7 +106,7 @@ const adduserkyc = async (req, res) => {
     try {
         const { id } = req.params
         const { kyc } = req.body
-        console.log("kyc",req);
+        console.log("kyc",req.body);
         
         await users.findByIdAndUpdate(id, { kyc: kyc }, { new: true })
         res.status(200).send('kyc added succesfully')
