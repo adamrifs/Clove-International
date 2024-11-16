@@ -20,7 +20,6 @@ connectDB()
 
 app.use('/api/user', userRoutes)
 app.use('/api/investments',investmentRoutes)
-app.use('/api/kyc',kycRoutes)
 
 app.listen(port, () => {
     console.log(`server connected on port ${port}`)
