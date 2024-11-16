@@ -76,6 +76,9 @@ const edituser = async (req, res) => {
             date: new Date()
         };
         const updatedUser = await users.findByIdAndUpdate(id, { $push: { investments: newInvestment } }, { new: true })
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         // res.status(200).send('investment data saved succesfull')
         res.status(200).json({ message: 'Investments added successfully', updatedUser });
         console.log(investments, 'investments details')
