@@ -1,4 +1,5 @@
 const users = require('../Models/userSchema')
+const kyc = require('../Models/userSchema')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const upload = require('../Middleware/multer')
@@ -42,15 +43,15 @@ const login = async (req, res) => {
             $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
         })
         if (!user) {
-            res.status(500).json({ message: 'invalid email or phone number' })
+            return res.status(500).json({ message: 'invalid email or phone number' })
 
         }
         const ispasswordvalid = await bcrypt.compare(password, user.password)
         if (!ispasswordvalid) {
-            res.status(500).json({ message: 'password not match' })
+            return res.status(500).json({ message: 'password not match' })
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-        res.json({ message: 'login succesfull', token })
+        return res.json({ message: 'login succesfull', token })
     }
     catch (error) {
         res.status(500).json({ message: 'error occured' })
@@ -112,9 +113,14 @@ const getuserwithinvestment = async (req, res) => {
 
 const registerkyc = async (req, res) => {
     try {
-        console.log('Request Body:', req.body);
-        console.log('Files:', req.files);
+        // console.log('Request Body:', req.body);
+        // console.log('Files:', req.files);
 
+        const userId = req.user.id
+        const user = await users.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         // Define file paths for compressed images
         const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
         const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
@@ -128,7 +134,7 @@ const registerkyc = async (req, res) => {
         }
 
         // Save KYC data
-        const kycData = new kyc({
+        user.kyc = {
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
@@ -143,7 +149,7 @@ const registerkyc = async (req, res) => {
             photo: photoPath,
             govidcard: govidcardPath,
             data: Date.now(),
-        });
+        };
 
         await kycData.save();
         res.status(200).json({ message: 'KYC data updated successfully', data: kycData });

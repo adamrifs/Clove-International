@@ -11,6 +11,7 @@ router.put('/edituser/:id', userMiddleware, userController.edituser)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.post(
     '/registerkyc',
+    userMiddleware,
     upload.fields([
         { name: 'photo', maxCount: 1 },
         { name: 'govidcard', maxCount: 1 },
