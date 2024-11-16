@@ -75,8 +75,9 @@ const edituser = async (req, res) => {
             investmentId: investments,
             date: new Date()
         };
-        await users.findByIdAndUpdate(id, { $push: { investments: newInvestment } }, { new: true })
-        res.status(200).send('investment data saved succesfull')
+        const updatedUser = await users.findByIdAndUpdate(id, { $push: { investments: newInvestment } }, { new: true })
+        // res.status(200).send('investment data saved succesfull')
+        res.status(200).json({ message: 'Investments added successfully', updatedUser });
         console.log(investments, 'investments details')
     }
     catch (error) {
