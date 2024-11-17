@@ -50,7 +50,7 @@ const login = async (req, res) => {
         if (!ispasswordvalid) {
             return res.status(500).json({ message: 'password not match' })
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10m' })
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' })
         return res.json({ message: 'login succesfull', token })
     }
     catch (error) {
