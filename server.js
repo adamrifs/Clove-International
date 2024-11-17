@@ -3,7 +3,6 @@ const cors = require('cors')
 const connectDB = require('./Config/db')
 const userRoutes = require('./Routes/userRoutes')
 const investmentRoutes = require('./Routes/investmentRoutes')
-const kycRoutes = require('./Routes/kycRoutes')
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 dotenv.config()

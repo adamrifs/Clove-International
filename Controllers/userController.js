@@ -50,7 +50,7 @@ const login = async (req, res) => {
         if (!ispasswordvalid) {
             return res.status(500).json({ message: 'password not match' })
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10m' })
         return res.json({ message: 'login succesfull', token })
     }
     catch (error) {
@@ -113,19 +113,16 @@ const getuserwithinvestment = async (req, res) => {
 
 const registerkyc = async (req, res) => {
     try {
-        // console.log('Request Body:', req.body);
-        // console.log('Files:', req.files);
+    
 
         const userId = req.user.id
         const user = await users.findById(userId)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        // Define file paths for compressed images
         const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
         const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
 
-        // Compress images using Sharp
         if (req.files.photo) {
             await compressImage(req.files.photo[0].buffer, photoPath);
         }
@@ -133,7 +130,6 @@ const registerkyc = async (req, res) => {
             await compressImage(req.files.govidcard[0].buffer, govidcardPath);
         }
 
-        // Save KYC data
         user.kyc = {
             name: req.body.name,
             email: req.body.email,
@@ -158,32 +154,5 @@ const registerkyc = async (req, res) => {
         res.status(500).send('Internal error occurred');
     }
 };
-
-// const adduserkyc = async (req, res) => {
-//     try {
-//         const { id } = req.params
-//         const { kyc } = req.body
-//         console.log("kyc", req.body);
-
-//         await users.findByIdAndUpdate(id, { kyc: kyc }, { new: true })
-//         res.status(200).send('kyc added succesfully')
-//     }
-//     catch (error) {
-//         console.log(error)
-//         res.status(500).send('error occured')
-//     }
-// }
-
-// const getuserkyc = async (req, res) => {
-//     try {
-//         const { id } = req.params
-//         const userkyc = await users.findById(id).populate('kyc')
-//         res.status(200).send(userkyc)
-//     }
-//     catch (error) {
-//         console.log(error)
-//         res.status(500).send('error occured')
-//     }
-// }
 
 module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc }
