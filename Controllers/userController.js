@@ -77,7 +77,7 @@ const getUser = async (req, res) => {
 const getallusers = async (req, res) => {
     try {
         const findUser = await users.find()
-        res.status(200).json({ message: 'users fetched succesfull' })
+        res.status(200).send(findUser)
     }
     catch (error) {
         console.log(error)
@@ -163,4 +163,4 @@ const registerkyc = async (req, res) => {
     }
 };
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc ,getallusers }
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers }
