@@ -7,6 +7,7 @@ const { upload } = require('../Middleware/multer')
 router.post('/register', userController.register)
 router.post('/login', userController.login)
 router.get('/getUser', userMiddleware, userController.getUser)
+router.get('/getallusers', userController.getallusers)
 router.put('/edituser/:id', userMiddleware, userController.edituser)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.post(

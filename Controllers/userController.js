@@ -74,6 +74,16 @@ const getUser = async (req, res) => {
     }
 }
 
+const getallusers = async (req, res) => {
+    try {
+        const findUser = await users.find()
+        res.status(200).json({ message: 'users fetched succesfull' })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send('error occured')
+    }
+}
 
 const edituser = async (req, res) => {
     try {
@@ -113,8 +123,6 @@ const getuserwithinvestment = async (req, res) => {
 
 const registerkyc = async (req, res) => {
     try {
-    
-
         const userId = req.user.id
         const user = await users.findById(userId)
         if (!user) {
@@ -148,11 +156,11 @@ const registerkyc = async (req, res) => {
         };
 
         await user.save();
-        res.status(200).json({ message: 'KYC data updated successfully', user});
+        res.status(200).json({ message: 'KYC data updated successfully', user });
     } catch (error) {
         console.log(error);
         res.status(500).send('Internal error occurred');
     }
 };
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc }
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc ,getallusers }
