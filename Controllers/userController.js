@@ -120,6 +120,24 @@ const getuserwithinvestment = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+const editUserDetails = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { firstname, email } = req.body
+        const update = {}
+        if (firstname) update.firstname = firstname;
+        if (email) update.email = email;
+
+        const user = await users.findByIdAndUpdate(id, update, { new: true })
+        if (!user) {
+            return res.status(400).json({ message: 'user not found' })
+        }
+        res.status(200).json({ message: 'data edited succesfull', user })
+    }
+    catch (error) {
+        console.log(error, 'internal error occured')
+    }
+}
 
 const registerkyc = async (req, res) => {
     try {
@@ -163,4 +181,4 @@ const registerkyc = async (req, res) => {
     }
 };
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers }
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers, editUserDetails }
