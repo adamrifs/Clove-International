@@ -11,6 +11,7 @@ router.get('/getallusers', userController.getallusers)
 router.put('/edituser/:id', userMiddleware, userController.edituser)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.put('/editUserDetails/:id', userController.editUserDetails)
+router.put('/changePassword/:id',userController.changePassword)
 router.post('/registerkyc', userMiddleware,
     upload.fields([
         { name: 'photo', maxCount: 1 },

@@ -123,13 +123,12 @@ const getuserwithinvestment = async (req, res) => {
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
-        const { firstname, email, phone, password } = req.body
+        const { firstname, email, phone, } = req.body
         const update = {}
         if (firstname) update.firstname = firstname;
         if (email) update.email = email;
         if (phone) update.phone = phone;
-        if (password) update.password = password
-        
+
         const user = await users.findByIdAndUpdate(id, update, { new: true })
         if (!user) {
             return res.status(400).json({ message: 'user not found' })
@@ -137,7 +136,32 @@ const editUserDetails = async (req, res) => {
         res.status(200).json({ message: 'data edited succesfull', user })
     }
     catch (error) {
-        console.log(error, 'internal error occured')
+        console.log(error, 'Internal error occurred');
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+const changePassword = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { newPassword, currentPassword } = req.body
+        const user = await users.findById(id)
+        if (!user) {
+            return res.status(400).json({ message: 'user not found' })
+        }
+        isPasswordMatch = await bcrypt.compare(currentPassword, user.password)
+        if (!isPasswordMatch) {
+            return res.status(500).json({ message: 'current password not equal' })
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+        user.password = hashedPassword
+        await user.save()
+        res.status(200).json({ message: 'password changed succesfull' })
+    }
+    catch (error) {
+        console.log(error, 'Internal error occurred');
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
 
@@ -183,4 +207,4 @@ const registerkyc = async (req, res) => {
     }
 };
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers, editUserDetails }
+module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers, editUserDetails, changePassword }
