@@ -123,11 +123,12 @@ const getuserwithinvestment = async (req, res) => {
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
-        const { firstname, email, phone } = req.body
+        const { firstname, email, phone, password } = req.body
         const update = {}
         if (firstname) update.firstname = firstname;
         if (email) update.email = email;
         if (phone) update.phone = phone;
+        if (password) update.password = password
         
         const user = await users.findByIdAndUpdate(id, update, { new: true })
         if (!user) {
