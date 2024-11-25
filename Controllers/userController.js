@@ -172,8 +172,19 @@ const registerkyc = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
-        const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
+        // Ensure upload directory exists
+        const uploadDir = './uploads/images';
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        // Prepare file paths
+        const timestamp = Date.now();
+        const photoPath = path.join(uploadDir, `compressed-photo-${userId}-${timestamp}.jpg`);
+        const govidcardPath = path.join(uploadDir, `compressed-govidcard-${userId}-${timestamp}.jpg`);
+
+        // const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
+        // const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
 
         if (req.files.photo) {
             await compressImage(req.files.photo[0].buffer, photoPath);
