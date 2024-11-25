@@ -19,6 +19,7 @@ router.post('/registerkyc', userMiddleware,
     ]),
     userController.registerkyc
 );
+// router.get('/uploads',)
 // router.get('/getuserkyc/:id', userController.getuserkyc)
 // router.put('/adduserkyc/:id', userController.adduserkyc)
 module.exports = router
