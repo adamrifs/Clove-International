@@ -172,9 +172,11 @@ const registerkyc = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        
-        const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
-        const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
+
+        const baseUrl = 'https://clove-international.onrender.com'
+
+        const photoPath = `${baseUrl}/uploads/images/compressed-photo-${Date.now()}.jpg`;
+        const govidcardPath = `${baseUrl}/uploads/images/compressed-govidcard-${Date.now()}.jpg`;
 
         if (req.files.photo) {
             await compressImage(req.files.photo[0].buffer, photoPath);
