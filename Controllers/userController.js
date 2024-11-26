@@ -170,7 +170,7 @@ const registerkyc = async (req, res) => {
         const userId = req.user.id
         const user = await users.findById(userId)
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' })
         }
 
         // const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
