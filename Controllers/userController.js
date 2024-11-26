@@ -172,17 +172,31 @@ const registerkyc = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        
-        const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
-        const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
 
-        if (req.files.photo) {
-            await compressImage(req.files.photo[0].buffer, photoPath);
-        }
-        if (req.files.govidcard) {
-            await compressImage(req.files.govidcard[0].buffer, govidcardPath);
+        // const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
+        // const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
+
+        // if (req.files.photo) {
+        //     await compressImage(req.files.photo[0].buffer, photoPath);
+        // }
+        // if (req.files.govidcard) {
+        //     await compressImage(req.files.govidcard[0].buffer, govidcardPath);
+        // }
+        const photoFile = req.files.photo ? req.files.photo[0] : null;
+        const govidFile = req.files.govidcard ? req.files.govidcard[0] : null;
+
+        let photoPath = null;
+        let govidcardPath = null;
+
+        if (photoFile) {
+            photoPath = `uploads/images/compressed-photo-${Date.now()}.jpg`;
+            await compressAndSaveImage(photoFile.buffer, path.join(__dirname, '../', photoPath));
         }
 
+        if (govidFile) {
+            govidcardPath = `uploads/images/compressed-govidcard-${Date.now()}.jpg`;
+            await compressAndSaveImage(govidFile.buffer, path.join(__dirname, '../', govidcardPath));
+        }
         user.kyc = {
             name: req.body.name,
             email: req.body.email,
@@ -195,8 +209,10 @@ const registerkyc = async (req, res) => {
             bankaccountnumber: req.body.bankaccountnumber,
             bankifsc: req.body.bankifsc,
             bankbranch: req.body.bankbranch,
-            photo: photoPath,
-            govidcard: govidcardPath,
+            // photo: photoPath,
+            // govidcard: govidcardPath,
+            photo: photoPath ? `/${photoPath}` : null, // Save relative path for frontend use
+            govidcard: govidcardPath ? `/${govidcardPath}` : null,
             data: Date.now(),
         };
 
