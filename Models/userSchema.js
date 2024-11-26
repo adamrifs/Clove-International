@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     c_password: { type: String },
+    userimage: { type: String },
     kycStatus: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
     kyc: kycSchema,
     investments: [{

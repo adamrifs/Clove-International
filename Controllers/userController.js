@@ -106,7 +106,18 @@ const edituser = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
-
+const addUserImage = async (req, res) => {
+    try {
+        const { id } = req.params
+        const userimage = req.file.path
+        await users.findByIdAndUpdate(id, { userimage: userimage }, { new: true })
+        res.status(200).json({ message: 'profile picture updated ' })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'internal error occured', error })
+    }
+}
 const getuserwithinvestment = async (req, res) => {
     try {
         const { id } = req.params
@@ -173,16 +184,6 @@ const registerkyc = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
-
-        // const photoPath = `./uploads/images/compressed-photo-${Date.now()}.jpg`;
-        // const govidcardPath = `./uploads/images/compressed-govidcard-${Date.now()}.jpg`;
-
-        // if (req.files.photo) {
-        //     await compressImage(req.files.photo[0].buffer, photoPath);
-        // }
-        // if (req.files.govidcard) {
-        //     await compressImage(req.files.govidcard[0].buffer, govidcardPath);
-        // }
         const photoFile = req.files.photo ? req.files.photo[0] : null;
         const govidFile = req.files.govidcard ? req.files.govidcard[0] : null;
 
@@ -210,8 +211,6 @@ const registerkyc = async (req, res) => {
             bankaccountnumber: req.body.bankaccountnumber,
             bankifsc: req.body.bankifsc,
             bankbranch: req.body.bankbranch,
-            // photo: photoPath,
-            // govidcard: govidcardPath,
             photo: photoPath ? `/${photoPath}` : null, // Save relative path for frontend use
             govidcard: govidcardPath ? `/${govidcardPath}` : null,
             data: Date.now(),
@@ -225,4 +224,7 @@ const registerkyc = async (req, res) => {
     }
 };
 
-module.exports = { register, login, edituser, getuserwithinvestment, getUser, registerkyc, getallusers, editUserDetails, changePassword }
+module.exports = {
+    register, login, edituser, getuserwithinvestment, getUser, registerkyc,
+    getallusers, editUserDetails, changePassword, addUserImage
+}

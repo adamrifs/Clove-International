@@ -9,9 +9,10 @@ router.post('/login', userController.login)
 router.get('/getUser', userMiddleware, userController.getUser)
 router.get('/getallusers', userController.getallusers)
 router.put('/edituser/:id', userMiddleware, userController.edituser)
+router.put('/addUserImage/:id', upload.single('userImage'), userController.addUserImage)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.put('/editUserDetails/:id', userController.editUserDetails)
-router.put('/changePassword/:id',userController.changePassword)
+router.put('/changePassword/:id', userController.changePassword)
 router.post('/registerkyc', userMiddleware,
     upload.fields([
         { name: 'photo', maxCount: 1 },
