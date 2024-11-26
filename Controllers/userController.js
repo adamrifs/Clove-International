@@ -182,21 +182,23 @@ const registerkyc = async (req, res) => {
         // if (req.files.govidcard) {
         //     await compressImage(req.files.govidcard[0].buffer, govidcardPath);
         // }
-        const photoFile = req.files.photo ? req.files.photo[0] : null;
-        const govidFile = req.files.govidcard ? req.files.govidcard[0] : null;
 
-        let photoPath = null;
-        let govidcardPath = null;
+        // /===================
+        // const photoFile = req.files.photo ? req.files.photo[0] : null;
+        // const govidFile = req.files.govidcard ? req.files.govidcard[0] : null;
 
-        if (photoFile) {
-            photoPath = `uploads/images/compressed-photo-${Date.now()}.jpg`;
-            await compressAndSaveImage(photoFile.buffer, path.join(__dirname, '../', photoPath));
-        }
+        // let photoPath = null;
+        // let govidcardPath = null;
 
-        if (govidFile) {
-            govidcardPath = `uploads/images/compressed-govidcard-${Date.now()}.jpg`;
-            await compressAndSaveImage(govidFile.buffer, path.join(__dirname, '../', govidcardPath));
-        }
+        // if (photoFile) {
+        //     photoPath = `uploads/images/compressed-photo-${Date.now()}.jpg`;
+        //     await compressAndSaveImage(photoFile.buffer, path.join(__dirname, '../', photoPath));
+        // }
+
+        // if (govidFile) {
+        //     govidcardPath = `uploads/images/compressed-govidcard-${Date.now()}.jpg`;
+        //     await compressAndSaveImage(govidFile.buffer, path.join(__dirname, '../', govidcardPath));
+        // }
         user.kyc = {
             name: req.body.name,
             email: req.body.email,
@@ -211,8 +213,10 @@ const registerkyc = async (req, res) => {
             bankbranch: req.body.bankbranch,
             // photo: photoPath,
             // govidcard: govidcardPath,
-            photo: photoPath ? `/${photoPath}` : null, // Save relative path for frontend use
-            govidcard: govidcardPath ? `/${govidcardPath}` : null,
+            // photo: photoPath ? `/${photoPath}` : null, // Save relative path for frontend use
+            // govidcard: govidcardPath ? `/${govidcardPath}` : null,
+            photo: req.body.file,
+            govidcard: req.body.file,
             data: Date.now(),
         };
 
