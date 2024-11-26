@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const upload = require('../Middleware/multer')
 const { compressImage } = require('../Middleware/multer')
 const path = require('path')
+const fs = require('fs');
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -106,18 +107,37 @@ const edituser = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+
 const addUserImage = async (req, res) => {
     try {
-        const { id } = req.params
-        const userimage = req.file.path
-        await users.findByIdAndUpdate(id, { userimage: userimage }, { new: true })
-        res.status(200).json({ message: 'profile picture updated ' })
+        const userId = req.params.id;
+
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const uploadDir = path.join(__dirname, '../uploads/userimages');
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        const fileName = `${userId}-${Date.now()}.jpeg`;
+        const filePath = path.join(uploadDir, fileName);
+
+        // Compress and save the image
+        await compressImage(req.file.buffer, filePath);
+
+        const updatedImage = await users.findByIdAndUpdate(userId,
+            { userimage: `/uploads/userimages/${fileName}` },
+            { new: true })
+        res.status(200).json({ message: 'profile picture updated ', updatedImage })
     }
     catch (error) {
         console.log(error)
         res.status(500).json({ message: 'internal error occured', error })
     }
 }
+
 const getuserwithinvestment = async (req, res) => {
     try {
         const { id } = req.params
