@@ -8,7 +8,7 @@ const storage = multer.memoryStorage(); // Temporarily store files in memory
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // Limit the initial file upload to 5MB
+    limits: { fileSize: 10 * 1024 * 1024 }, // Limit the initial file upload to 5MB
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
     },
