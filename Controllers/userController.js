@@ -140,7 +140,7 @@ const addUserImage = async (req, res) => {
 
 const updateUserimage = async (req, res) => {
     try {
-        const { id } = req.params.id
+        const { id } = req.params
         if (!req.file) {
             res.status(400).json({ message: "no file updated" })
         }
