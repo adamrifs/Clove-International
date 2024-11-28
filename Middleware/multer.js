@@ -27,13 +27,21 @@ function checkFileType(file, cb) {
 }
 
 // Function to compress image
-const compressImage = async (buffer, outputPath) => {
-    await sharp(buffer)
-        .resize({ width: 1024 }) // Resize to a maximum width of 1024px
-        .jpeg({ quality: 80 }) // Compress to 80% quality
-        .toFile(outputPath);
-};
+// const compressImage = async (buffer, outputPath) => {
+//     await sharp(buffer)
+//         .resize({ width: 1024 }) // Resize to a maximum width of 1024px
+//         .jpeg({ quality: 80 }) // Compress to 80% quality
+//         .toFile(outputPath);
+// };
 
+const compressImage = async (buffer, filename) => {
+    const outputPath = path.join(__dirname, 'uploads', filename);
+    await sharp(buffer)
+        .resize({ width: 1024 })
+        .jpeg({ quality: 80 })
+        .toFile(outputPath);
+    return `/uploads/${filename}`;
+};
 
 // module.exports = upload;
 module.exports = { upload, compressImage };
