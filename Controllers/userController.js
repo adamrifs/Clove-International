@@ -142,7 +142,7 @@ const updateUserimage = async (req, res) => {
     try {
         const { id } = req.params
         if (!req.file) {
-            res.status(400).json({ message: "no file updated" })
+           return res.status(400).json({ message: "no file updated" })
         }
 
         const uploadDir = path.join(__dirname, '../uploads/userimages')
