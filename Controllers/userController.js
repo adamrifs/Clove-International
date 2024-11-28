@@ -288,5 +288,5 @@ const registerkyc = async (req, res) => {
 
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
-    getallusers, editUserDetails, changePassword, addUserImage ,updateUserimage
+    getallusers, editUserDetails, changePassword, addUserImage, updateUserimage
 }
