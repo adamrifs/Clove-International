@@ -138,6 +138,47 @@ const addUserImage = async (req, res) => {
     }
 }
 
+const updateUserimage = async (req, res) => {
+    try {
+        const { id } = req.params.id
+        if (!req.file) {
+            res.status.(400).json({ message: "no file updated" })
+        }
+
+        const uploadDir = path.join(__dirname, '../uploads/userimages')
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true })
+        }
+
+        const user = await users.findById(id)
+        if (!user) {
+            res.status(404).json({ message: 'user not found' })
+        }
+
+        if (user.userimage) {
+            const oldpath = path.join(__dirname, `..${user.userimage}`)
+            if (fs.existsSync(oldpath)) {
+                fs.unlinkSync(oldpath)
+            }
+        }
+
+        const fileName = `${id}-${Date.now()}.jpeg`
+        const filepath = path.join(uploadDir, fileName)
+
+        await compressImage(req.file.buffer, filepath)
+
+        const updatedImage = await users.findByIdAndUpdate(id,
+            { userimage: `/uploads/userimages/${fileName}` },
+            { new: true }
+        )
+        res.status(200).json({ message: 'Profile picture updated successfully', updatedImage });
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'internal error occured', error })
+    }
+}
+
 const getuserwithinvestment = async (req, res) => {
     try {
         const { id } = req.params
@@ -152,6 +193,7 @@ const getuserwithinvestment = async (req, res) => {
         res.status(500).send('error occured')
     }
 }
+
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
@@ -246,5 +288,5 @@ const registerkyc = async (req, res) => {
 
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
-    getallusers, editUserDetails, changePassword, addUserImage
+    getallusers, editUserDetails, changePassword, addUserImage ,updateUserimage
 }
