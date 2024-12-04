@@ -3,6 +3,7 @@ const cors = require('cors')
 const connectDB = require('./Config/db')
 const userRoutes = require('./Routes/userRoutes')
 const investmentRoutes = require('./Routes/investmentRoutes')
+const paymentRoutes = require('./Routes/paymentRoutes')
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 const path = require('path')
@@ -20,6 +21,7 @@ connectDB()
 
 app.use('/api/user', userRoutes)
 app.use('/api/investments', investmentRoutes)
+app.use('/api/payment', paymentRoutes)
 
 app.listen(port, () => {
     console.log(`server connected on port ${port}`)
