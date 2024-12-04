@@ -55,9 +55,11 @@ const deletePlans = async (req, res) => {
     }
 }
 
+const CLIENT_SECRET = cfsk_ma_prod_da8a81d7e8d1498110a90f850c5e16bb_5c7c1377
 
 Cashfree.XClientId = process.env.CLIENT_ID;
-Cashfree.XClientSecret = process.env.CLIENT_SECRET;
+// Cashfree.XClientSecret = process.env.CLIENT_SECRET;
+Cashfree.XClientSecret = CLIENT_SECRET
 Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
 
 const newOrderId = async (req, res) => {
