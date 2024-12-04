@@ -3,7 +3,7 @@ require('dotenv').config();
 
 Cashfree.XClientId = process.env.CLIENT_ID;
 Cashfree.XClientSecret = process.env.CLIENT_SECRET;
-Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
+Cashfree.XEnvironment = Cashfree.Environment.PRODUCTION;
 
 const newOrderId = async (req, res) => {
     try {
@@ -31,7 +31,7 @@ const newOrderId = async (req, res) => {
         res.status(200).json({ payment_session_id: response.data.payment_session_id });
     }
     catch (error) {
-        console.error("Error:", error.response?.data?.message || error.message);
+        console.error("Error:", error.response?.data?.message || error.message );
         res.status(500).json({ error: error.response?.data?.message || "Internal error occurred" });
     }
 }
