@@ -80,15 +80,14 @@ const newOrderId = async (req, res) => {
             }
         };
 
-        Cashfree.PGCreateOrder("2023-08-01", request).then((response) => {
-            console.log('Order created successfully:', response.data);
-        }).catch((error) => {
-            console.error('Error:', error.response.data.message);
-        });
+        const response = await Cashfree.PGCreateOrder("2023-08-01", request);
+        console.log("Order created successfully:", response.data);
+
+        res.status(200).json({ payment_session_id: response.data.payment_session_id });
     }
     catch (error) {
-        console.log(error)
-        res.status(500).send('internal error occured')
+        console.error("Error:", error.response?.data?.message || error.message);
+        res.status(500).json({ error: error.response?.data?.message || "Internal error occurred" });
     }
 }
 module.exports = { addPlans, getPlans, editPlans, deletePlans, newOrderId }
