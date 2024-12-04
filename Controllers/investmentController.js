@@ -1,4 +1,6 @@
 const investmentplans = require('../Models/investmentShcema')
+const { Cashfree } = require('cashfree-pg');
+require('dotenv').config();
 
 const addPlans = async (req, res) => {
     try {
@@ -53,4 +55,40 @@ const deletePlans = async (req, res) => {
     }
 }
 
-module.exports = { addPlans, getPlans, editPlans, deletePlans }
+
+Cashfree.XClientId = process.env.CLIENT_ID;
+Cashfree.XClientSecret = process.env.CLIENT_SECRET;
+Cashfree.XEnvironment = Cashfree.Environment.SANDBOX;
+
+const newOrderId = async (req, res) => {
+    try {
+        const uniqueOrderId = `order_${Date.now()}_${Math.floor(Math.random() * 100000)}`
+
+        let request = {
+            "order_amount": 1.00,
+            "order_currency": "INR",
+            "order_id": uniqueOrderId,
+            "customer_details": {
+                "customer_id": "devstudio_user",
+                "customer_phone": "8474090589",
+                "customer_name": "Harshith",
+                "customer_email": "test@cashfree.com"
+            },
+            "order_meta": {
+                "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}",
+                "payment_methods": "cc,dc,upi"
+            }
+        };
+
+        Cashfree.PGCreateOrder("2023-08-01", request).then((response) => {
+            console.log('Order created successfully:', response.data);
+        }).catch((error) => {
+            console.error('Error:', error.response.data.message);
+        });
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send('internal error occured')
+    }
+}
+module.exports = { addPlans, getPlans, editPlans, deletePlans, newOrderId }
