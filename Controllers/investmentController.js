@@ -65,14 +65,14 @@ const newOrderId = async (req, res) => {
         const uniqueOrderId = `order_${Date.now()}_${Math.floor(Math.random() * 100000)}`
 
         let request = {
-            "order_amount": 1.00,
+            "order_amount": req.body.order_amount,
             "order_currency": "INR",
             "order_id": uniqueOrderId,
             "customer_details": {
-                "customer_id": "devstudio_user",
-                "customer_phone": "8474090589",
-                "customer_name": "Harshith",
-                "customer_email": "test@cashfree.com"
+                "customer_id": req.body.customer_id,
+                "customer_phone": req.body.customer_phone,
+                "customer_name": req.body.customer_name,
+                "customer_email": req.body.customer_email
             },
             "order_meta": {
                 "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}",
