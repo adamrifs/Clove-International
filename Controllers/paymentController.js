@@ -3,7 +3,7 @@ require('dotenv').config();
 
 Cashfree.XClientId = process.env.CLIENT_ID;
 Cashfree.XClientSecret = process.env.CLIENT_SECRET;
-Cashfree.XEnvironment = Cashfree.Environment.TEST;
+Cashfree.XEnvironment = Cashfree.Environment.PRODUCTION;
 
 const newOrderId = async (req, res) => {
     try {
