@@ -31,8 +31,8 @@ const newOrderId = async (req, res) => {
         res.status(200).json({ payment_session_id: response.data.payment_session_id });
     }
     catch (error) {
-        console.error("Error:", error.response?.data?.message || error.message );
-        res.status(500).json({ error: error.response?.data?.message || "Internal error occurred" });
+        console.error("Error during order creation:", error.response?.data || error.message);
+        res.status(500).json({ error: error.response?.data?.message || "Internal Server Error" });
     }
 }
 
