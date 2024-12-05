@@ -3,6 +3,6 @@ const router = express.Router()
 const paymentController = require('../Controllers/paymentController')
 
 
-router.post('/newOrderId', paymentController.newOrderId)
+router.get('/newOrderId', paymentController.newOrderId)
 
 module.exports = router

@@ -27,7 +27,6 @@ const newOrderId = async (req, res) => {
 
         const response = await Cashfree.PGCreateOrder("2023-08-01", request);
         console.log("Order created successfully:", response.data);
-
         res.status(200).json({ payment_session_id: response.data.payment_session_id });
     }
     catch (error) {
