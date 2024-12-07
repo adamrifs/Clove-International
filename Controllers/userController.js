@@ -196,7 +196,7 @@ const getuserwithinvestment = async (req, res) => {
 
 const approveInvestment = async (req, res) => {
     try {
-        const { userId, investmentId } = req.params
+        const { id: userId, investmentid: investmentId } = req.params
         const { status } = req.body
         const updatedUserInvestment = await users.findOneAndUpdate(
             { _id: userId, 'investments.investmentId': investmentId },
