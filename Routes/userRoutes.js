@@ -12,7 +12,7 @@ router.put('/edituser/:id', userMiddleware, userController.edituser)
 router.put('/addUserImage/:id', upload.single('userimage'), userController.addUserImage)
 router.put('/updateUserimage/:id', upload.single('userimage'), userController.updateUserimage)
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
-router.put('/approveInvestment:id', userController.approveInvestment)
+router.put('/approveInvestment/:id', userController.approveInvestment)
 router.put('/editUserDetails/:id', userController.editUserDetails)
 router.put('/changePassword/:id', userController.changePassword)
 router.post('/registerkyc', userMiddleware,
