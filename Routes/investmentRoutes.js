@@ -7,5 +7,4 @@ router.post('/addPlans', investmentController.addPlans)
 router.get('/getPlans', investmentController.getPlans)
 router.put('/editPlans/:id', investmentController.editPlans)
 router.delete('/deletePlans/:id', investmentController.deletePlans)
-
 module.exports = router
