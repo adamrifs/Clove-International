@@ -142,7 +142,7 @@ const updateUserimage = async (req, res) => {
     try {
         const { id } = req.params
         if (!req.file) {
-           return res.status(400).json({ message: "no file updated" })
+            return res.status(400).json({ message: "no file updated" })
         }
 
         const uploadDir = path.join(__dirname, '../uploads/userimages')
@@ -194,6 +194,18 @@ const getuserwithinvestment = async (req, res) => {
     }
 }
 
+const approveInvestment = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { status } = req.body
+        const updatedUserInvestment = await users.findByIdAndUpdate(id, { status }, { new: true })
+        res.status(200).json({ message: 'succesfully updated status', updatedUserInvestment })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'something error occured' })
+    }
+}
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
@@ -288,5 +300,5 @@ const registerkyc = async (req, res) => {
 
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
-    getallusers, editUserDetails, changePassword, addUserImage, updateUserimage
+    getallusers, editUserDetails, changePassword, addUserImage, updateUserimage,approveInvestment
 }

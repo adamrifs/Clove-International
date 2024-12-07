@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     kyc: kycSchema,
     investments: [{
         investmentId: { type: mongoose.Schema.Types.ObjectId, ref: 'investmentplans' },
+        status: { type: String, enum: ['approved', 'dissaproved', 'pending'], default: 'pending' },
         date: { type: Date, default: Date.now }
     }]
 })
