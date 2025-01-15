@@ -211,6 +211,27 @@ const approveInvestment = async (req, res) => {
     }
 }
 
+const investmentStatus = async (req, res) => {
+    try {
+
+        const user = await users.find()
+        if (!user) {
+            return res.status(400).json({ message: 'user not found' })
+        }
+        const allInvestmentStatus = user.map(user => ({
+            userId: user._id,
+            investments: user.investments.map(investment => ({
+                investmentId: investment.investmentId,
+                status: investment.status
+            }))
+        }))
+        res.status(200).json({ message: 'successfull', allInvestmentStatus })
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ message: 'error on investmentStatus' })
+    }
+}
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
@@ -305,5 +326,6 @@ const registerkyc = async (req, res) => {
 
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
-    getallusers, editUserDetails, changePassword, addUserImage, updateUserimage, approveInvestment
+    getallusers, editUserDetails, changePassword, addUserImage, updateUserimage, approveInvestment,
+    investmentStatus
 }
