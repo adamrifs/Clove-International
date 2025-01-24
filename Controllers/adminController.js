@@ -34,16 +34,34 @@ const adminLogin = async (req, res) => {
         if (!admin) {
             return res.status(500).json({ message: 'no account found' })
         }
-        const ispassword = await bcrypt.compare(password,admin.password)
-        if(!ispassword){
-            return res.status(500).json({message:'password not match'})
+        const ispassword = await bcrypt.compare(password, admin.password)
+        if (!ispassword) {
+            return res.status(500).json({ message: 'password not match' })
         }
-        res.status(200).json({message:'login succesfull',email:admin.email,password:admin.password})
+        res.status(200).json({ message: 'login succesfull', email: admin.email, password: admin.password })
 
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message })
     }
 }
+const adminChangePassword = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { newpassword } = req.body
 
-module.exports = { adminSignup ,adminLogin}
+        const admin = await admins.findById(id)
+        if (!admin) {
+            return res.status(400).json({ message: 'no user found' })
+        }
+        const hashPassword = await bcrypt.hash(newpassword, 10)
+        admin.password = hashPassword
+        await admin.save()
+        res.status(200).json({ message: 'password changed' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+}
+
+module.exports = { adminSignup, adminLogin, adminChangePassword }
