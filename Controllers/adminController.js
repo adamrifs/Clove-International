@@ -51,6 +51,7 @@ const adminChangePassword = async (req, res) => {
     try {
         const { newpassword } = req.body
         const id = req.user._id
+        console.log(newpassword)
         const admin = await admins.findById(id)
         if (!admin) {
             return res.status(400).json({ message: 'no user found' })
