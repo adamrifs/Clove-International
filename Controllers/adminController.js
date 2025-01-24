@@ -1,3 +1,4 @@
+const generateToken = require('../Config/utils')
 const admins = require('../Models/adminSchema')
 const bcrypt = require('bcryptjs')
 
@@ -38,6 +39,7 @@ const adminLogin = async (req, res) => {
         if (!ispassword) {
             return res.status(500).json({ message: 'password not match' })
         }
+        generateToken(admin._id, res)
         res.status(200).json({ message: 'login succesfull', email: admin.email, password: admin.password })
 
     } catch (error) {
@@ -47,9 +49,8 @@ const adminLogin = async (req, res) => {
 }
 const adminChangePassword = async (req, res) => {
     try {
-        const { id } = req.params
         const { newpassword } = req.body
-
+        const id = req.user._id
         const admin = await admins.findById(id)
         if (!admin) {
             return res.status(400).json({ message: 'no user found' })
@@ -64,4 +65,22 @@ const adminChangePassword = async (req, res) => {
     }
 }
 
-module.exports = { adminSignup, adminLogin, adminChangePassword }
+const checkAdmin = async (req, res) => {
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+}
+
+const logout = async (req, res) => {
+    try {
+        res.cookie('jwt', "", { maxAge: 0 })
+        res.status(200).json({ message: 'logout succesfull' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+}
+module.exports = { adminSignup, adminLogin, adminChangePassword, checkAdmin, logout }
