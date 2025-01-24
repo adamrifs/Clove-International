@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000
 
 app.use(cors({
     origin: ['https://clove-international.onrender.com', 'http://localhost:3000'],
-    credentials:true
+    credentials: true
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +26,7 @@ connectDB()
 
 app.use('/api/user', userRoutes)
 app.use('/api/investments', investmentRoutes)
-app.use('/api/admin',adminRoutes)
+app.use('/api/admin', adminRoutes)
 
 app.listen(port, () => {
     console.log(`server connected on port ${port}`)

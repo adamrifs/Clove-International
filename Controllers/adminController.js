@@ -16,8 +16,11 @@ const adminSignup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10)
         const newAdmin = new admins({ email, password: hashedPassword })
-        await newAdmin.save()
-        res.status(200).json({ message: newAdmin })
+        if (newAdmin) {
+            generateToken(newAdmin._id, res)
+            await newAdmin.save()
+            res.status(200).json({ message: newAdmin })
+        }
 
     } catch (error) {
         console.log(error)
