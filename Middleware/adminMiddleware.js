@@ -1,18 +1,20 @@
 const dotenv = require('dotenv')
-const jwt =require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const admins = require('../Models/adminSchema')
 dotenv.config()
 
 const protectRoute = async (req, res, next) => {
     try {
-        console.log('Cookies:', req.cookies);
+        console.log(req.cookies); // For cookies
+        console.log(req.headers.authorization); // For headers
+
         const token = req.cookies.jwt
         if (!token) {
-             res.status(500).json({ message: 'token required' })
+            res.status(500).json({ message: 'token required' })
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         if (!decoded) {
-             res.status(500).json({ message: 'unauthorized login' })
+            res.status(500).json({ message: 'unauthorized login' })
         }
         const user = await admins.findById(decoded.userId).select('-password')
         if (!user) {
