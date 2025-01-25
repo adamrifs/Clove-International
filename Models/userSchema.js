@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
     userimage: { type: String },
     kycStatus: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
     kyc: kycSchema,
+    withdraw: [{
+        amount: { type: Number, default: 0 },
+        date: { type: Date, default: Date.now }
+    }],
     investments: [{
         investmentId: { type: mongoose.Schema.Types.ObjectId, ref: 'investmentplans' },
         status: { type: String, enum: ['approved', 'dissaproved', 'pending'], default: 'pending' },

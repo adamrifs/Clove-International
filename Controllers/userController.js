@@ -324,8 +324,25 @@ const registerkyc = async (req, res) => {
     }
 };
 
+const moneyWithdraw = async (req, res) => {
+    try {
+        const id = req.user.id
+        const { amount } = req.body
+        const user = await users.findById(id)
+        if (!user) {
+            return res.status(404).json({ message: 'user not found' })
+        }
+        user.withdraw.push({amount})
+        await user.save()
+        res.status(200).json({ message: 'withdraw amount added', user })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.message, 'error occured on money witdraw');
+    }
+}
+
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
     getallusers, editUserDetails, changePassword, addUserImage, updateUserimage, approveInvestment,
-    investmentStatus
+    investmentStatus , moneyWithdraw
 }

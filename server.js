@@ -5,7 +5,6 @@ const userRoutes = require('./Routes/userRoutes')
 const investmentRoutes = require('./Routes/investmentRoutes')
 const adminRoutes = require('./Routes/adminRoutes')
 const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 const path = require('path')
 dotenv.config()
