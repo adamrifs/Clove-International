@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     kyc: kycSchema,
     withdraw: [{
         amount: { type: Number, default: 0 },
+        status: { type: String, enum: ['pending', 'success', 'failed'], default: 'pending' },
         date: { type: Date, default: Date.now }
     }],
     investments: [{
