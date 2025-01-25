@@ -17,6 +17,7 @@ router.get('/investment-status', userController.investmentStatus)
 router.put('/editUserDetails/:id', userController.editUserDetails)
 router.put('/changePassword/:id', userController.changePassword)
 router.post('/money-withdraw', userMiddleware, userController.moneyWithdraw)
+router.patch('/withdraw-status', userController.withdrawStatus)
 router.post('/registerkyc', userMiddleware,
     upload.fields([
         { name: 'photo', maxCount: 1 },
