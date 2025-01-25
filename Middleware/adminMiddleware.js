@@ -5,8 +5,10 @@ dotenv.config()
 
 const protectRoute = async (req, res, next) => {
     try {
-        console.log('req', req.cookies);
-        const token = req.cookies
+        console.log('req.cookies:', req.cookies);
+        console.log('req.headers:', req.headers);
+
+        const token = req.cookies.jwt
         if (!token) {
             res.status(500).json({ message: 'token required' })
         }
