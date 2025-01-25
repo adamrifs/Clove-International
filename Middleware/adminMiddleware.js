@@ -8,7 +8,7 @@ const protectRoute = async (req, res, next) => {
         console.log(req.cookies); // For cookies
         console.log(req.headers.authorization); // For headers
 
-        const token = req.cookies.jwt
+        const token = req.headers['authorization']?.split(' ')[1]
         if (!token) {
             res.status(500).json({ message: 'token required' })
         }

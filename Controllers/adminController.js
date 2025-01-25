@@ -68,7 +68,15 @@ const adminChangePassword = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
-
+const getAdmin = async (req, res) => {
+    try {
+        const allAdmin = await admins.find()
+        res.status(200).send(allAdmin)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+    }
+}
 const checkAdmin = async (req, res) => {
     try {
         res.status(200).json(req.user)
