@@ -95,4 +95,4 @@ const logout = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
-module.exports = { adminSignup, adminLogin, adminChangePassword, checkAdmin, logout }
+module.exports = { adminSignup, adminLogin, adminChangePassword, checkAdmin, logout ,getAdmin}
