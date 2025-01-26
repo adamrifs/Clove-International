@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
     userimage: { type: String },
     kycStatus: { type: String, enum: ['pending', 'verified', 'rejected'], default: 'pending' },
     kyc: kycSchema,
+    percentage: { type: Number, enum: [20, 30], default: '30' },
     withdraw: [{
         amount: { type: Number, default: 0 },
         status: { type: String, enum: ['pending', 'success', 'failed'], default: 'pending' },

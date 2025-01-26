@@ -14,6 +14,7 @@ router.put('/updateUserimage/:id', upload.single('userimage'), userController.up
 router.get('/getuserwithinvestment/:id', userController.getuserwithinvestment)
 router.put('/approveInvestment/:id/:investmentid', userController.approveInvestment)
 router.get('/investment-status', userController.investmentStatus)
+router.patch('/add-percentage', userController.addPercentage)
 router.put('/editUserDetails/:id', userController.editUserDetails)
 router.put('/changePassword/:id', userController.changePassword)
 router.post('/money-withdraw', userMiddleware, userController.moneyWithdraw)

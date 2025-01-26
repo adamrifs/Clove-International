@@ -232,6 +232,23 @@ const investmentStatus = async (req, res) => {
         res.status(500).json({ message: 'error on investmentStatus' })
     }
 }
+const addPercentage = async (req, res) => {
+    try {
+        const { userId,  percentage } = req.body
+        const user = await users.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+        user.percentage = percentage
+        await user.save()
+        res.status(200).json({ message: 'Percentage Updated'  })
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ message: 'error on editPercentage' })
+    }
+}
+
 const editUserDetails = async (req, res) => {
     try {
         const { id } = req.params
@@ -364,5 +381,5 @@ const withdrawStatus = async (req, res) => {
 module.exports = {
     register, login, edituser, getuserwithinvestment, getUser, registerkyc,
     getallusers, editUserDetails, changePassword, addUserImage, updateUserimage, approveInvestment,
-    investmentStatus, moneyWithdraw ,withdrawStatus
+    investmentStatus, moneyWithdraw, withdrawStatus ,addPercentage
 }
